@@ -1,8 +1,7 @@
+extern crate cmake;
 extern crate pkg_config;
 
 use std::env;
-use std::process::Command;
-use std::path::PathBuf;
 
 fn main() {
     if env::var_os("HARFBUZZ_SYS_NO_PKG_CONFIG").is_none() {
@@ -11,14 +10,7 @@ fn main() {
         }
     }
 
-    assert!(Command::new("make")
-        .args(&["-R", "-f", "makefile.cargo", &format!("-j{}", env::var("NUM_JOBS").unwrap())])
-        .status()
-        .unwrap()
-        .success());
-
-    let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").to_str().unwrap());
-    println!("cargo:rustc-link-lib=static=harfbuzz");
-    println!("cargo:rustc-link-lib=stdc++");
+    let dst = cmake::Config::new("harfbuzz").build_target("ALL_BUILD").build();
+    println!("cargo:rust-link-search=native={}", dst.display());
+    println!("cargo:rust-link-lib=static=harfbuzz");
 }
