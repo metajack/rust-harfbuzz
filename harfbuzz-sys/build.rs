@@ -10,7 +10,7 @@ fn main() {
         }
     }
 
-    let dst = cmake::Config::new("harfbuzz").build_target("ALL_BUILD").build();
-    println!("cargo:rust-link-search=native={}", dst.display());
-    println!("cargo:rust-link-lib=static=harfbuzz");
+    let dst = cmake::Config::new("harfbuzz").build_target("INSTALL").build();
+    println!("cargo:rustc-link-search=native={}", dst.display());
+    println!("cargo:rustc-link-lib=static=harfbuzz");
 }
