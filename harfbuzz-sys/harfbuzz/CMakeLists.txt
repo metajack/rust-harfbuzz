@@ -120,3 +120,4 @@ if(WIN32 AND NOT MINGW)
 endif()
 
 add_library(harfbuzz STATIC ${HARFBUZZ_SOURCES})
+install(TARGETS harfbuzz ARCHIVE DESTINATION .)
